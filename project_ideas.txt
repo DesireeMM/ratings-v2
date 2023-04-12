@@ -1,0 +1,19 @@
+Think About Relationships Between Data
+1. Can multiple users rate the same movie? In other words, how many ratings can a movie have?
+- Multiple users should be able to rate the same movie.
+- A movie should be able to have as many ratings as there are users.
+2. Can one user rate multiple movies?
+- Yes, one user should be able to rate multiple movies.
+3. How will you associate a rating with a certain user and movie?
+- I think we will need a table with user data that holds all the user data.
+- We will need a separate table that holds all the movies with their associated ratings.
+- We will need another table to hold all the ratings with their respective users.
+- We will need to make user_id and movie_id primary keys of their respective tables and foreign keys in the other.
+
+db.Relationships
+1. We're passing in 2 arguments to db.relationship -- what's the purpose of each argument?
+- The first argument is the class we're relating to, or the class this attribute will be associated with.
+- The second argument is the name of the attribute that will be used to reference the related instance(s) of this class.
+- The second argument does not need to match the table name, it was just a coincidence in the example.
+2. What does back_populates refer to?
+- back_populates is assigned a value that corresponds to the name of the attribute in the class with the relationship.
