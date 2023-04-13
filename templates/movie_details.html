@@ -11,4 +11,9 @@
 
 <img src="{{ movie.poster_path }}">
 
+<form action="/rating" method="POST">
+    What do you rate this film?<input type="text" name="rating">
+    <input type="hidden" id="movie_id" name="movie_id" value="{{ movie.movie_id }}">
+    <input type="submit">
+</form>
 {% endblock %}

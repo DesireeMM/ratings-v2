@@ -17,3 +17,20 @@ db.Relationships
 - The second argument does not need to match the table name, it was just a coincidence in the example.
 2. What does back_populates refer to?
 - back_populates is assigned a value that corresponds to the name of the attribute in the class with the relationship.
+
+Creating Ratings
+- The rating form will be on our movie_details page
+- We should utilize our crud.create_rating function
+- user_id should be taken from our session
+- movie_id will be grabbed from the page itself
+- score will be a user input
+
+AJAX request
+- We want a feature where users can update their ratings
+- This means we need to first access their current rating
+- Then we need to update the database value
+- To update the database value we use UPDATE in SQL, in SQLAlchemy we can use rating.score
+- Implementation:
+    - display movies a user has already rated
+    - allow user to submit a new rating if desired
+    - create an update rating function in crud.py that runs when a user submits

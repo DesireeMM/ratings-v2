@@ -15,10 +15,15 @@ def get_users():
     return User.query.all()
 
 def get_user_by_id(user_id):
-    """Return a user given its id"""
+    """Return a user given their id"""
     
     return User.query.get(user_id)
-    
+
+def get_user_by_email(email):
+    """Return a user given their email"""
+
+    return User.query.filter(User.email == email).first()
+
 def create_movie(title, overview, release_date, poster_path):
     """Create and return a new movie"""
 
@@ -47,7 +52,20 @@ def create_rating(user, movie, score):
                     score=score)
 
     return rating
-    
+
+def get_user_ratings(user_id):
+    """Return a list of all user's ratings"""
+    user = get_user_by_id(user_id)
+
+    return user.ratings
+
+def update_rating(rating_id, new_score):
+    """Update a user's rating given the rating_id"""
+
+    target_rating = Rating.query.get(rating_id)
+    target_rating.score = new_score
+    db.session.commit()
+
 if __name__ == '__main__':
     from server import app
     connect_to_db(app)

@@ -17,6 +17,12 @@ class User(db.Model):
 
     ratings = db.relationship("Rating", back_populates="user")
 
+    @classmethod
+    def create(cls, email, password):
+        """Create and return a new user"""
+
+        return cls(email=email, password=password)
+
     def __repr__(self):
         return f'<User user_id={self.user_id} email={self.email}>'
     
@@ -34,6 +40,12 @@ class Movie(db.Model):
 
     ratings = db.relationship("Rating", back_populates="movie")
 
+    @classmethod
+    def create(cls, title, overview, release_date, poster_path):
+        """Create and return a new movie"""
+
+        return cls(title=title, overview=overview, release_date=release_date, poster_path=poster_path)
+
     def __repr__(self):
         return f'<Movie movie_id={self.movie_id} title={self.title}>'
     
@@ -50,6 +62,12 @@ class Rating(db.Model):
 
     movie = db.relationship("Movie", back_populates="ratings")
     user = db.relationship("User", back_populates="ratings")
+
+    @classmethod
+    def create(cls, user, movie, score):
+        """Create and return a new rating"""
+
+        return cls(user=user, movie=movie, score=score)
 
     def __repr__(self):
         return f'<Rating rating_id={self.rating_id} score={self.score}>'
