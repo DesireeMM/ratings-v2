@@ -34,3 +34,12 @@ AJAX request
     - display movies a user has already rated
     - allow user to submit a new rating if desired
     - create an update rating function in crud.py that runs when a user submits
+
+tell js how to override what's happening in python
+which form is being submitted?
+my js file will need to place an event listener on the form submission
+prevent default
+translate update rating to js
+have the route return data rather than rendering a template
+then can send that data to the server via the route
+return is either the Rating object or the data from it

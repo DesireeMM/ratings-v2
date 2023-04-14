@@ -53,11 +53,6 @@ def create_rating(user, movie, score):
 
     return rating
 
-def get_user_ratings(user_id):
-    """Return a list of all user's ratings"""
-    user = get_user_by_id(user_id)
-
-    return user.ratings
 
 def update_rating(rating_id, new_score):
     """Update a user's rating given the rating_id"""

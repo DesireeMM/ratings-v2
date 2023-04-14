@@ -5,15 +5,18 @@
 {% block body %}
 <h1>{{ user.email }}</h1>
 
-{% for rating in ratings %}
+{% for rating in user.ratings %}
 <p>
-    Movie: {{ rating.movie.title }} <br> Score: {{ rating.score }}
+    Movie: {{ rating.movie.title }} 
+    <br> Score: <span id="score_{{rating.rating_id}}">{{ rating.score }}</span>
+    <button class="edit-movie-rating" id="{{ rating.rating_id }}">Edit rating?</button>
 </p>
 {% endfor %}
-<form action="/update-ratings" method="POST">
+<script src="/static/js/updateRatings.js"></script>
+<!-- <form action="/update-ratings" id="update-rating" method="POST">
     <label for="movie-list">Choose a movie to update:</label>
     <select name="movie" id="movie-list">
-{% for rating in ratings %}
+{% for rating in user.ratings %}
         <option value="{{rating.rating_id}}">{{rating.movie.title}}</option>
        
 {% endfor %}
@@ -21,5 +24,5 @@
     What is your new rating?<input type="text" id="new-score" name="new-score">
     <input type="hidden" name="user_id" id="user_id" value="{{user.user_id}}">
     <input type="submit">
-</form>
+</form> -->
 {% endblock %}

@@ -27,7 +27,8 @@ def page_login():
     user = crud.get_user_by_email(user_email)
     if user.password == user_password:
         session["user_id"] = user.user_id
-        flash("Logged in!")
+        session["logged_in_email"] = user.email
+        flash(f"Logged in {user.email}!")
     else:
         flash("Password incorrect. Try again.")
     
@@ -79,37 +80,66 @@ def show_user(user_id):
     """Show details on a particular user"""
 
     user = crud.get_user_by_id(user_id)
-    ratings = crud.get_user_ratings(user_id)
+   
 
 
-    return render_template('user_details.html', user=user, ratings=ratings)
+    return render_template('user_details.html', user=user)
 
 @app.route('/update-ratings', methods=["POST"])
 def update_rating():
     """Update a user's rating for a particular movie"""
 
-
-    user_id = request.form.get("user_id")
-    rating_id = request.form.get("movie")
-    new_score = request.form.get("new-score")
+    rating_id = request.json["rating_id"]
+    new_score = request.json["new_score"]
 
     crud.update_rating(rating_id, new_score)
 
-    return redirect(f'/users/{user_id}')
+    return {
+        "success": True,
+        "status": f"You have changed the rating to {new_score}."
+    }
 
-@app.route('/rating', methods=["POST"])
-def add_rating():
+    # user_id = request.form.get("user_id")
+    # rating_id = request.form.get("movie")
+    # new_score = request.form.get("new-score")
+
+    # crud.update_rating(rating_id, new_score)
+
+    # return redirect(f'/users/{user_id}')
+
+@app.route('/movies/<movie_id>/ratings', methods=["POST"])
+def add_rating(movie_id):
     """Add a user's movie rating to the database"""
+
+    logged_in_email = session.get("logged_in_email")
+
     user = crud.get_user_by_id(session.get("user_id"))
-    movie_id = request.form.get("movie_id")
     movie = crud.get_movie_by_id(movie_id)
     score = int(request.form.get("rating"))
 
-    rating = crud.create_rating(user, movie, score)
-    db.session.add(rating)
-    db.session.commit()
+    if logged_in_email is None:
+        flash("You must log in to rate a movie.")
+    elif not score:
+        flash("Error: you didn't enter a score for your rating.")
+    elif score not in range(1, 6):
+        flash("Error: invalid rating. Please choose between 1 and 5.")
+    else:
+        rating = crud.create_rating(user, movie, score)
+        db.session.add(rating)
+        db.session.commit()
+
+        flash(f"You rated this movie {score} out of 5.")
 
     return redirect(f"/movies/{movie_id}")
+
+@app.route('/logout')
+def logout():
+    """Log out."""
+    user = session.get("logged_in_email")
+    session.clear()
+    flash(f"Logged out {user}.")
+
+    return redirect("/")
 
 if __name__ == "__main__":
     connect_to_db(app)
